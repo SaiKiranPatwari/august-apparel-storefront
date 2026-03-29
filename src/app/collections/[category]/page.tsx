@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ProductCard from "@/components/product/ProductCard";
 import { ChevronDown, SlidersHorizontal, X, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Product } from "@/lib/mockProducts";
 
 export default function CategoryPage({ params }: { params: { category: string } }) {
@@ -13,6 +14,9 @@ export default function CategoryPage({ params }: { params: { category: string } 
   const [isLoading, setIsLoading] = useState(true);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  
+  const searchParams = useSearchParams();
+  const q = searchParams.get('q');
   
   const brands = ["Endless Rose", "English Factory", "Grey Lab", "Free the Roses"];
 
@@ -26,6 +30,9 @@ export default function CategoryPage({ params }: { params: { category: string } 
         }
         if (selectedBrands.length > 0) {
           queryParams.append("brands", selectedBrands.join(","));
+        }
+        if (q) {
+          queryParams.append("q", q);
         }
         
         const response = await fetch(`/api/products?${queryParams.toString()}`);
@@ -41,7 +48,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
     }
 
     fetchProducts();
-  }, [params.category, selectedBrands]);
+  }, [params.category, selectedBrands, q]);
 
   const toggleBrand = (brand: string) => {
     setSelectedBrands(prev => 
@@ -131,9 +138,14 @@ export default function CategoryPage({ params }: { params: { category: string } 
       </nav>
 
       <div className="flex justify-between items-end mb-8 border-b border-brand-sand pb-6">
-        <h1 className="text-4xl font-serif text-brand-charcoal capitalize whitespace-nowrap">
-          {categoryName}
-        </h1>
+        <div>
+          <h1 className="text-4xl font-serif text-brand-charcoal capitalize whitespace-nowrap">
+            {categoryName}
+          </h1>
+          {q && (
+            <p className="text-brand-charcoal mt-2 italic">Search Results for "{q}"</p>
+          )}
+        </div>
         <p className="text-sm text-brand-charcoal/70">{!isLoading && `${products.length} items`}</p>
       </div>
 

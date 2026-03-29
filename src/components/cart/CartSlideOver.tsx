@@ -18,7 +18,7 @@ export default function CartSlideOver() {
         onClick={() => setIsCartOpen(false)}
       />
 
-      <div className="fixed inset-y-0 right-0 z-[70] w-full sm:max-w-md bg-brand-offwhite shadow-xl transform transition-transform duration-300 ease-in-out flex flex-col">
+      <div className="fixed top-0 bottom-0 right-0 h-[100dvh] pb-safe z-[70] w-full sm:max-w-md bg-brand-offwhite shadow-xl transform transition-transform duration-300 ease-in-out flex flex-col">
         
         <div className="flex items-center justify-between px-6 py-4 border-b border-brand-sand bg-white">
           <h2 className="text-xl font-serif text-brand-charcoal flex items-center">

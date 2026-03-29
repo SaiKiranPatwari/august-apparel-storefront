@@ -28,7 +28,7 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-black/20" /> {/* Slight overlay for text readability */}
         
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 mt-16 text-white text-balance">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-6 mt-16 text-white text-balance">
           <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl mb-6 font-semibold tracking-wide drop-shadow-md">
             The Fall Collection
           </h1>

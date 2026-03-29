@@ -5,8 +5,19 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const category = searchParams.get('category');
   const brands = searchParams.get('brands'); // comma separated
+  const q = searchParams.get('q'); // search text
 
   let products = [...mockProducts];
+
+  // Filter by Search Query
+  if (q) {
+    const query = q.toLowerCase();
+    products = products.filter(p => 
+      p.name.toLowerCase().includes(query) || 
+      (p.brand && p.brand.toLowerCase().includes(query)) ||
+      (p.category && p.category.toLowerCase().includes(query))
+    );
+  }
 
   // Filter by category
   if (category && category !== 'all') {
