@@ -10,7 +10,7 @@ import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { cartCount, setIsCartOpen } = useCart();
-  const { isSignedIn, isLoaded } = useUser();
+  const { isSignedIn } = useUser();
 
   // Mock categories
   const categories = [

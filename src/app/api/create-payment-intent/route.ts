@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 export async function POST(req: Request) {
   try {
@@ -20,10 +22,10 @@ export async function POST(req: Request) {
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Stripe processing error:', err);
     return NextResponse.json(
-      { error: err.message },
+      { error: err instanceof Error ? err.message : 'An unknown error occurred' },
       { status: 500 }
     );
   }
