@@ -1,101 +1,150 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
+    <div className="w-full">
+      {/* Promotional Marquee */}
+      <div className="bg-brand-sage text-brand-charcoal py-2 overflow-hidden whitespace-nowrap border-b border-brand-sand">
+        <div className="animate-[marquee_20s_linear_infinite] inline-block font-medium tracking-wide text-sm uppercase">
+          <span className="mx-4">Enjoy 20% off all dresses this weekend only.</span>
+          <span className="mx-4">•</span>
+          <span className="mx-4">Free standard shipping on orders over $150.</span>
+          <span className="mx-4">•</span>
+          <span className="mx-4">New arrivals just landed: Shop the Fall Collection.</span>
+          <span className="mx-4">•</span>
+          <span className="mx-4">Enjoy 20% off all dresses this weekend only.</span>
+        </div>
+      </div>
+
+      {/* Hero Section */}
+      <section className="relative w-full h-[70vh] md:h-[85vh] bg-brand-charcoal overflow-hidden group">
+        <Image 
+          src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop"
+          alt="Fall Collection Editorial"
+          fill
+          className="object-cover object-center transform transition-transform duration-[15s] group-hover:scale-105"
           priority
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        <div className="absolute inset-0 bg-black/20" /> {/* Slight overlay for text readability */}
+        
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 mt-16 text-white text-balance">
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl mb-6 font-semibold tracking-wide drop-shadow-md">
+            The Fall Collection
+          </h1>
+          <p className="text-lg md:text-xl mb-10 max-w-2xl font-light tracking-wider drop-shadow-md">
+            Embrace the change of seasons with rich textures, earthy hues, and timeless silhouettes.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link 
+              href="/collections/all" 
+              className="bg-white text-brand-charcoal px-10 py-4 font-semibold uppercase tracking-wider text-sm hover:bg-brand-sand transition-colors duration-300"
+            >
+              Shop New Arrivals
+            </Link>
+            <Link 
+              href="#curated" 
+              className="bg-transparent border border-white text-white px-10 py-4 font-semibold uppercase tracking-wider text-sm hover:bg-white hover:text-brand-charcoal transition-colors duration-300"
+            >
+              Discover The Lookbook
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Asymmetrical Curated Grid */}
+      <section id="curated" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-24">
+        <div className="text-center mb-16">
+          <h2 className="font-serif text-3xl md:text-4xl text-brand-charcoal mb-4">Curated For You</h2>
+          <div className="w-16 h-px bg-brand-charcoal mx-auto"></div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+          
+          {/* Large Editorial Card (Left) */}
+          <Link href="/collections/dresses" className="col-span-1 md:col-span-7 group block relative overflow-hidden h-[500px] md:h-[700px]">
+            <Image
+              src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1481&auto=format&fit=crop"
+              alt="Dresses collection"
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70 transition-opacity group-hover:opacity-90" />
+            <div className="absolute bottom-0 left-0 p-8 md:p-12 text-white">
+              <h3 className="font-serif text-3xl md:text-5xl mb-3 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">The Dress Edit</h3>
+              <p className="text-sm uppercase tracking-widest font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">Shop Dresses &rarr;</p>
+            </div>
+          </Link>
+
+          {/* Right Column Stack */}
+          <div className="col-span-1 md:col-span-5 flex flex-col gap-6 md:gap-8 h-full">
+            
+            {/* Top Right Card */}
+            <Link href="/collections/accessories" className="group block relative overflow-hidden h-[300px] md:h-[330px] flex-1">
+              <Image
+                src="https://images.unsplash.com/photo-1582142407894-ec85a1260a46?q=80&w=1527&auto=format&fit=crop"
+                alt="Accessories"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/40" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
+                <h3 className="font-serif text-2xl md:text-3xl mb-2">Finishing Touches</h3>
+                <span className="text-xs uppercase tracking-widest border-b border-transparent group-hover:border-white transition-colors duration-300 pb-1">Shop Accessories</span>
+              </div>
+            </Link>
+
+            {/* Bottom Right Card */}
+            <Link href="/collections/shoes" className="group block relative overflow-hidden h-[300px] md:h-[330px] flex-1">
+              <Image
+                src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=1480&auto=format&fit=crop"
+                alt="Shoes"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/40" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
+                <h3 className="font-serif text-2xl md:text-3xl mb-2">Step Forward</h3>
+                <span className="text-xs uppercase tracking-widest border-b border-transparent group-hover:border-white transition-colors duration-300 pb-1">Shop Shoes</span>
+              </div>
+            </Link>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Text / Quote Section */}
+      <section className="bg-brand-sand py-24 px-6 text-center">
+        <div className="max-w-3xl mx-auto">
+          <p className="font-serif text-2xl md:text-4xl leading-relaxed text-brand-charcoal">
+            &quot;Our philosophy is simple: we believe in creating beautiful pieces that inspire confidence and stand the test of time. Every garment tells a story.&quot;
+          </p>
+          <div className="mt-8">
+            <Link href="#" className="text-sm uppercase tracking-widest font-semibold text-brand-charcoal border-b border-brand-charcoal pb-1 hover:text-brand-rust hover:border-brand-rust transition-colors duration-300">
+              Read Our Story
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Signup (Before Footer) */}
+      <section className="py-20 border-t border-brand-sand relative overflow-hidden">
+        <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+          <h2 className="font-serif text-3xl md:text-4xl mb-4 text-brand-charcoal">Join The Aura Community</h2>
+          <p className="mb-8 text-brand-charcoal/80">Sign up for exclusive offers, original stories, activism awareness, events and more.</p>
+          <form className="flex flex-col sm:flex-row max-w-lg mx-auto gap-4">
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              required
+              className="flex-1 border-b border-brand-charcoal bg-transparent px-2 py-3 focus:outline-none placeholder-brand-charcoal/50 text-brand-charcoal"
+            />
+            <button type="submit" className="bg-brand-charcoal text-white px-8 py-3 uppercase tracking-wider text-xs font-semibold hover:bg-brand-rust transition-colors">
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </section>
     </div>
   );
 }
