@@ -8,7 +8,6 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 import { useCart } from "@/lib/CartContext";
-import Link from "next/link";
 
 export default function CheckoutForm({ amount, onSuccess }: { amount: number, onSuccess: () => void }) {
   const stripe = useStripe();
