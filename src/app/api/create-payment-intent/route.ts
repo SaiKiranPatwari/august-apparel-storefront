@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+// Provide a fallback dummy string so Next.js static analysis does not crash during the build phase
+const stripe = new Stripe((process.env.STRIPE_SECRET_KEY as string) || 'sk_test_dummy');
 
 export async function POST(req: Request) {
   try {
