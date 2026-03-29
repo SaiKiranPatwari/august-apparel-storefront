@@ -3,11 +3,19 @@
 import { useCart } from "@/lib/CartContext";
 import { X, ShoppingBag, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 import Image from "next/image";
 
 export default function CartSlideOver() {
   const { isCartOpen, setIsCartOpen, items, removeItem, cartTotal, cartCount, updateQuantity } = useCart();
   const isEmpty = items.length === 0;
+  const pathname = usePathname();
+
+  // Bulletproof Next.js method: Automatically close the cart whenever the user changes pages
+  useEffect(() => {
+    setIsCartOpen(false);
+  }, [pathname, setIsCartOpen]);
 
   if (!isCartOpen) return null;
 
@@ -101,7 +109,6 @@ export default function CartSlideOver() {
             <p className="text-sm text-brand-charcoal/70">Shipping and taxes calculated at checkout.</p>
             <Link 
               href="/checkout"
-              onClick={() => setIsCartOpen(false)}
               className="block w-full text-center bg-brand-charcoal text-white py-4 uppercase font-semibold text-sm tracking-wider hover:bg-brand-rust transition-colors duration-300"
             >
               Checkout
