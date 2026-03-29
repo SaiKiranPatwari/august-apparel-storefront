@@ -14,6 +14,7 @@ export default function CheckoutPage() {
   const { cartTotal, items } = useCart();
   const [clientSecret, setClientSecret] = useState("");
   const [errorDesc, setErrorDesc] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     // Only fetch payment intent if cart has monetary value
@@ -44,7 +45,7 @@ export default function CheckoutPage() {
   }, [cartTotal]);
 
   // Handle empty cart state directly
-  if (items.length === 0) {
+  if (items.length === 0 && !isSuccess) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 text-center">
         <h1 className="text-3xl font-serif text-brand-charcoal mb-6">Your Cart is Empty</h1>
@@ -55,6 +56,40 @@ export default function CheckoutPage() {
         >
           Shop Now
         </Link>
+      </div>
+    );
+  }
+
+  // Handle successful checkout state
+  if (isSuccess) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center min-h-[70vh] flex flex-col items-center justify-center">
+        <div className="w-24 h-24 bg-brand-sage rounded-full flex items-center justify-center mx-auto mb-8 shadow-sm">
+          <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h1 className="text-4xl md:text-5xl font-serif text-brand-charcoal mb-4">Order Confirmed</h1>
+        <p className="text-xl text-brand-charcoal/80 mb-2">Thank you for your purchase!</p>
+        <div className="w-16 h-px bg-brand-sand mx-auto my-6"></div>
+        <p className="text-md text-brand-charcoal/60 mb-8 max-w-lg mx-auto leading-relaxed">
+          We&apos;ve received your order and are getting it ready to ship. 
+          A confirmation email with your receipt and tracking details has been sent to your provided address.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-2">
+          <Link 
+            href="/collections/all"
+            className="inline-block bg-brand-charcoal text-white px-10 py-4 uppercase tracking-wider font-semibold text-sm hover:bg-brand-rust transition-colors"
+          >
+            Continue Shopping
+          </Link>
+          <Link 
+            href="/account"
+            className="inline-block bg-white text-brand-charcoal border border-brand-sand px-10 py-4 uppercase tracking-wider font-semibold text-sm hover:bg-brand-offwhite transition-colors"
+          >
+            View Order Status
+          </Link>
+        </div>
       </div>
     );
   }
@@ -89,7 +124,7 @@ export default function CheckoutPage() {
             </div>
           ) : clientSecret ? (
             <Elements options={{ clientSecret, appearance }} stripe={stripePromise}>
-              <CheckoutForm amount={cartTotal} />
+              <CheckoutForm amount={cartTotal} onSuccess={() => setIsSuccess(true)} />
             </Elements>
           ) : (
             <div className="flex justify-center items-center py-32">
