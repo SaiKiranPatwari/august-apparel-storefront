@@ -143,7 +143,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
             {categoryName}
           </h1>
           {q && (
-            <p className="text-brand-charcoal mt-2 italic">Search Results for "{q}"</p>
+            <p className="text-brand-charcoal mt-2 italic">Search Results for &quot;{q}&quot;</p>
           )}
         </div>
         <p className="text-sm text-brand-charcoal/70">{!isLoading && `${products.length} items`}</p>
