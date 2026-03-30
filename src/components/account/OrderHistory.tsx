@@ -1,12 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/lib/CartContext";
 import { mockProducts } from "@/lib/mockProducts";
 
-const MOCK_ORDERS = [
+const DEFAULT_MOCK_ORDERS = [
   {
     id: "ORD-948271",
     date: "March 24, 2026",
@@ -30,16 +30,42 @@ const MOCK_ORDERS = [
 
 export default function OrderHistory() {
   const { addItem } = useCart();
+  const [orders, setOrders] = useState(DEFAULT_MOCK_ORDERS);
+  
+  // Modal State
+  const [modalOpen, setModalOpen] = useState(false);
+  const [actionType, setActionType] = useState<"cancel" | "return" | null>(null);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+
+  const handleActionClick = (orderId: string, type: "cancel" | "return") => {
+    setSelectedOrderId(orderId);
+    setActionType(type);
+    setModalOpen(true);
+  };
+
+  const confirmAction = () => {
+    if (selectedOrderId && actionType) {
+      setOrders(orders.map(o => {
+        if (o.id === selectedOrderId) {
+          return { ...o, status: actionType === "cancel" ? "Cancelled" : "Returned" };
+        }
+        return o;
+      }));
+    }
+    setModalOpen(false);
+    setSelectedOrderId(null);
+    setActionType(null);
+  };
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       <div className="mb-6">
         <h2 className="text-2xl font-serif text-brand-charcoal">Order History</h2>
-        <p className="text-brand-charcoal/60 text-sm mt-1">View and track your recent purchases.</p>
+        <p className="text-brand-charcoal/60 text-sm mt-1">View, track, or manage your recent purchases.</p>
       </div>
       
       <div className="space-y-8">
-        {MOCK_ORDERS.map((order) => (
+        {orders.map((order) => (
           <div key={order.id} className="border border-brand-sand bg-white overflow-hidden shadow-sm">
             <div className="bg-brand-offwhite px-6 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-brand-sand gap-4">
               <div className="flex gap-8">
@@ -60,16 +86,40 @@ export default function OrderHistory() {
               </div>
             </div>
             <div className="p-6">
-              <div className="flex justify-between items-center mb-6 pb-4 border-b border-brand-sand/50">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-brand-sand/50">
                 <h3 className="font-serif text-lg text-brand-charcoal flex items-center gap-2">
                   Status: 
-                  <span className={`px-3 py-1 text-xs uppercase tracking-wider font-bold rounded-full ${order.status === 'Delivered' ? 'bg-brand-sage/10 text-brand-sage' : 'bg-brand-rust/10 text-brand-rust'}`}>
+                  <span className={`px-3 py-1 text-xs uppercase tracking-wider font-bold rounded-full ${
+                      order.status === 'Delivered' ? 'bg-brand-sage/10 text-brand-sage' : 
+                      ['Cancelled', 'Returned'].includes(order.status) ? 'bg-black/5 text-brand-charcoal/60' : 
+                      'bg-brand-rust/10 text-brand-rust'
+                  }`}>
                     {order.status}
                   </span>
                 </h3>
-                <button className="text-sm font-medium text-brand-charcoal underline hover:text-brand-rust transition-colors">
-                  Track Package
-                </button>
+                <div className="flex items-center gap-6">
+                  {order.status === 'Shipped' && (
+                    <button 
+                      onClick={() => handleActionClick(order.id, "cancel")}
+                      className="text-sm font-medium text-brand-rust hover:text-red-700 transition-colors"
+                    >
+                      Cancel Order
+                    </button>
+                  )}
+                  {order.status === 'Delivered' && (
+                    <button 
+                      onClick={() => handleActionClick(order.id, "return")}
+                      className="text-sm font-medium text-brand-rust hover:text-red-700 transition-colors"
+                    >
+                      Return Order
+                    </button>
+                  )}
+                  {['Delivered', 'Shipped'].includes(order.status) && (
+                    <button className="text-sm font-medium text-brand-charcoal underline hover:text-brand-rust transition-colors">
+                      Track Package
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="space-y-6">
                 {order.items.map((item, idx) => (
@@ -96,9 +146,11 @@ export default function OrderHistory() {
                        >
                          Buy it again
                        </button>
-                       <button className="w-full px-6 py-2.5 text-xs uppercase tracking-wider font-semibold bg-brand-offwhite border border-brand-sand text-brand-charcoal hover:bg-brand-sand transition-all">
-                         Leave Review
-                       </button>
+                       {!['Cancelled', 'Returned'].includes(order.status) && (
+                         <button className="w-full px-6 py-2.5 text-xs uppercase tracking-wider font-semibold bg-brand-offwhite border border-brand-sand text-brand-charcoal hover:bg-brand-sand transition-all">
+                           Leave Review
+                         </button>
+                       )}
                     </div>
                   </div>
                 ))}
@@ -107,6 +159,35 @@ export default function OrderHistory() {
           </div>
         ))}
       </div>
+
+      {modalOpen && actionType && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-brand-charcoal/60 backdrop-blur-sm">
+          <div className="bg-white max-w-md w-full p-8 border border-brand-sand shadow-xl">
+            <h3 className="text-2xl font-serif text-brand-charcoal mb-4">
+              {actionType === "cancel" ? "Cancel Order" : "Return Order"}
+            </h3>
+            <p className="text-brand-charcoal/80 mb-8 leading-relaxed">
+              Are you sure you want to {actionType === "cancel" ? "cancel" : "return"} this order? 
+              You will be fully refunded to your original payment method.
+            </p>
+            <div className="flex justify-end gap-3.5 flex-col sm:flex-row">
+              <button 
+                onClick={() => setModalOpen(false)}
+                className="px-6 py-2.5 text-sm uppercase tracking-wider font-semibold border border-brand-sand text-brand-charcoal hover:bg-brand-offwhite transition-colors"
+              >
+                Go Back
+              </button>
+              <button 
+                onClick={confirmAction}
+                className="px-6 py-2.5 text-sm uppercase tracking-wider font-semibold bg-brand-charcoal text-white hover:bg-brand-rust transition-colors"
+              >
+                Confirm {actionType === "cancel" ? "Cancellation" : "Return"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

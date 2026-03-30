@@ -93,7 +93,7 @@ export default function Header() {
             
             {isSignedIn && (
               <div className="mt-1">
-                <UserButton />
+                <UserButton userProfileMode="navigation" userProfileUrl="/account" />
               </div>
             )}
             <button 
